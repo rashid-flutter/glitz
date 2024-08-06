@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:glitz/glitz/models/chat_user.dart';
@@ -20,6 +22,19 @@ class APIs {
         .exists;
   }
 
+  static late ChatUser me;
+
+  static Future<void> getSelfInfo() async {
+    await firestore.collection('Rashi').doc(user.uid).get().then((user) async {
+      if (user.exists) {
+        me = ChatUser.fromJson(user.data()!);
+        log('My Data: ${user.data()}');
+      } else {
+        await createUser().then((value) => getSelfInfo());
+      }
+    });
+  }
+
   //for creating a new user
   static Future<void> createUser() async {
     final time = DateTime.now().millisecondsSinceEpoch.toString();
@@ -38,5 +53,20 @@ class APIs {
         .collection('Rashi')
         .doc(user.uid)
         .set(chatUser.toJson());
+  }
+
+  static Stream<QuerySnapshot<Map<String, dynamic>>> getAllUsers() {
+    return firestore
+        .collection("Rashi")
+        .where('id', isNotEqualTo: user.uid)
+        .snapshots();
+  }
+
+  //Updete user info
+  static Future<void> updateUserInfo() async {
+    await firestore
+        .collection("Rashi")
+        .doc(user.uid)
+        .update({'name': me.name, 'about': me.about});
   }
 }

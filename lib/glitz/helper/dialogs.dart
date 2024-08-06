@@ -8,4 +8,12 @@ class Dialogs {
       behavior: SnackBarBehavior.floating,
     ));
   }
+
+  static void showProgressBar(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (_) => const Center(
+              child: CircularProgressIndicator(),
+            ));
+  }
 }
