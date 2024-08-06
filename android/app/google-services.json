@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1040172260122",
+    "project_id": "glitz-b482b",
+    "storage_bucket": "glitz-b482b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1040172260122:android:795047c8bc42be494f2aa3",
+        "android_client_info": {
+          "package_name": "com.example.glitz"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1040172260122-aq0j3kfoqd2spbhmrl10ue66dn1v1lko.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.glitz",
+            "certificate_hash": "10bb7f437964b93c44107b20c78c8c6428c83941"
+          }
+        },
+        {
+          "client_id": "1040172260122-mrm6s7asdtorsb5645g9spmpqqppodq7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBRJ5BK0y43JWoY2cnmDoADL4LLnXYNSs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1040172260122-mrm6s7asdtorsb5645g9spmpqqppodq7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
