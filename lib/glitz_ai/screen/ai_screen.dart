@@ -116,7 +116,7 @@ class _AiScreenState extends State<AiScreen> {
               backgroundColor: Colors.blue,
               child: IconButton(
                 onPressed: askQuestion,
-                icon: const Icon(Icons.rocket_launch_rounded,
+                icon: const Icon(Icons.send_outlined,
                     color: Colors.white, size: 28),
               ),
             )

@@ -3,11 +3,14 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:glitz/firebase_options.dart';
+import 'package:glitz/glitz_ai/constants/consts.dart';
 import 'package:glitz/screens/splash_screen.dart';
 
 // late Size mq;
 void main() async {
+  Gemini.init(apiKey: GEMINI_API_KEY);
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
   SystemChrome.setPreferredOrientations(

@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:glitz/api/apis.dart';
 import 'package:glitz/models/chat_user.dart';
@@ -19,64 +21,102 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   List<Message> list = [];
   final _textCon = TextEditingController();
+  bool showEmogi = false;
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: const Color.fromARGB(255, 234, 248, 255),
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          flexibleSpace: appBar(),
-          elevation: 10,
-        ),
-        body: Column(
-          children: [
-            // chatInput(),
-            Expanded(
-              child: StreamBuilder(
-                  stream: APIs.getAllMessages(widget.user),
-                  builder: (context, snapshot) {
-                    switch (snapshot.connectionState) {
-                      //data is loaded
-                      case ConnectionState.waiting:
-                      case ConnectionState.none:
-                        return const SizedBox();
-
-                      //if all data is loaded then show it
-                      case ConnectionState.active:
-                      case ConnectionState.done:
-                        final data = snapshot.data?.docs;
-                        // log('Data: ${jsonEncode(data![0].data())}');
-                        list = data
-                                ?.map((e) => Message.fromJson(e.data()))
-                                .toList() ??
-                            [];
-                        // final list = ['Hi', 'Hello'];
-
-                        if (list.isNotEmpty) {
-                          return ListView.builder(
-                            padding: EdgeInsets.only(
-                                top: MediaQuery.of(context).size.height * .01),
-                            physics: const BouncingScrollPhysics(),
-                            itemBuilder: (context, index) {
-                              return MessageCard(
-                                message: list[index],
-                              );
-                            },
-                            itemCount: list.length,
-                          );
-                        } else {
-                          return const Center(
-                              child: Text(
-                            'Say Hii! 👋',
-                            style: TextStyle(fontSize: 20),
-                          ));
-                        }
-                    }
-                  }),
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child: SafeArea(
+        // ignore: deprecated_member_use
+        child: WillPopScope(
+          onWillPop: () {
+            if (showEmogi) {
+              setState(() {
+                showEmogi = !showEmogi;
+              });
+              return Future.value(false);
+            } else {
+              return Future.value(true);
+            }
+          },
+          child: Scaffold(
+            backgroundColor: const Color.fromARGB(255, 234, 248, 255),
+            appBar: AppBar(
+              automaticallyImplyLeading: false,
+              flexibleSpace: appBar(),
+              elevation: 10,
             ),
-            chatInput()
-          ],
+            body: Column(
+              children: [
+                // chatInput(),
+                Expanded(
+                  child: StreamBuilder(
+                      stream: APIs.getAllMessages(widget.user),
+                      builder: (context, snapshot) {
+                        switch (snapshot.connectionState) {
+                          //data is loaded
+                          case ConnectionState.waiting:
+                          case ConnectionState.none:
+                            return const SizedBox();
+
+                          //if all data is loaded then show it
+                          case ConnectionState.active:
+                          case ConnectionState.done:
+                            final data = snapshot.data?.docs;
+                            // log('Data: ${jsonEncode(data![0].data())}');
+                            list = data
+                                    ?.map((e) => Message.fromJson(e.data()))
+                                    .toList() ??
+                                [];
+                            // final list = ['Hi', 'Hello'];
+
+                            if (list.isNotEmpty) {
+                              return ListView.builder(
+                                padding: EdgeInsets.only(
+                                    top: MediaQuery.of(context).size.height *
+                                        .01),
+                                physics: const BouncingScrollPhysics(),
+                                itemBuilder: (context, index) {
+                                  return MessageCard(
+                                    message: list[index],
+                                  );
+                                },
+                                itemCount: list.length,
+                              );
+                            } else {
+                              return const Center(
+                                  child: Text(
+                                'Say Hii! 👋',
+                                style: TextStyle(fontSize: 20),
+                              ));
+                            }
+                        }
+                      }),
+                ),
+                chatInput(),
+                if (showEmogi)
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * .35,
+                    child: EmojiPicker(
+                        textEditingController: _textCon,
+                        config: Config(
+                          // height: 256,
+
+                          checkPlatformCompatibility: true,
+
+                          emojiViewConfig: EmojiViewConfig(
+                            columns: 8,
+                            backgroundColor:
+                                const Color.fromARGB(255, 234, 248, 255),
+                            emojiSizeMax: 32 * (Platform.isIOS ? 1.20 : 1.0),
+                          ),
+                        )),
+                  )
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -138,6 +178,28 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
+  //?emoji
+  emoji() {
+    if (showEmogi) {
+      SizedBox(
+        height: MediaQuery.of(context).size.height * .35,
+        child: EmojiPicker(
+            textEditingController: _textCon,
+            config: Config(
+              // height: 256,
+
+              checkPlatformCompatibility: true,
+
+              emojiViewConfig: EmojiViewConfig(
+                columns: 8,
+                backgroundColor: const Color.fromARGB(255, 234, 248, 255),
+                emojiSizeMax: 32 * (Platform.isIOS ? 1.20 : 1.0),
+              ),
+            )),
+      );
+    }
+  }
+
   Widget chatInput() {
     return Padding(
       padding: EdgeInsets.symmetric(
@@ -152,7 +214,12 @@ class _ChatScreenState extends State<ChatScreen> {
               child: Row(
                 children: [
                   IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        FocusScope.of(context).unfocus();
+
+                        setState(() => showEmogi = !showEmogi);
+                        emoji();
+                      },
                       icon: const Icon(
                         Icons.emoji_emotions,
                         color: Colors.blueAccent,
@@ -163,6 +230,13 @@ class _ChatScreenState extends State<ChatScreen> {
                     controller: _textCon,
                     keyboardType: TextInputType.multiline,
                     maxLines: null,
+                    onTap: () {
+                      if (showEmogi) {
+                        setState(() {
+                          showEmogi = !showEmogi;
+                        });
+                      }
+                    },
                     decoration: const InputDecoration(
                         hintText: "Type Somethings...",
                         hintStyle: TextStyle(color: Colors.blueAccent),

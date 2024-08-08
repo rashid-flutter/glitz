@@ -26,8 +26,8 @@ class AiMessageCard extends StatelessWidget {
               CircleAvatar(
                 radius: 18,
                 backgroundColor: Colors.white,
-                child: Image.asset(
-                  'assets/images/ai.jpg',
+                child: Lottie.asset(
+                  'assets/lottie/ai.json',
                   width: 24,
                 ),
               ),

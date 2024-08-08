@@ -7,7 +7,7 @@ import 'package:glitz/api/apis.dart';
 import 'package:glitz/auth/firebase_auth.dart';
 import 'package:glitz/glitz_ai/screen/ai_screen.dart';
 import 'package:glitz/models/chat_user.dart';
-import 'package:glitz/screens/profile_screen.dart';
+import 'package:glitz/profile/screen/profile_screen.dart';
 import 'package:glitz/screens/splash_screen.dart';
 import 'package:glitz/widgets/chat_user_card.dart';
 import 'package:lottie/lottie.dart';
@@ -34,6 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
+      // ignore: deprecated_member_use
       child: WillPopScope(
         //*if search on back button is pressed then close search
         //*or else simple clos curent scren on back button click
