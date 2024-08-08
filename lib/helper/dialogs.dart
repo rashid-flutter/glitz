@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:glitz/glitz/api/apis.dart';
-import 'package:glitz/glitz/models/chat_user.dart';
+import 'package:glitz/api/apis.dart';
+import 'package:glitz/models/chat_user.dart';
 
 class Dialogs {
-  final ChatUser user = ChatUser();
-
   static void showSnackBar(BuildContext context, String msg) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text(msg),

@@ -1,24 +1,33 @@
 // import 'package:chat_app/main.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:glitz/glitz/models/chat_user.dart';
-import 'package:glitz/glitz/screens/profile_screen.dart';
+import 'package:glitz/models/chat_user.dart';
+import 'package:glitz/chat/screen/chat_screen.dart';
+import 'package:glitz/screens/profile_screen.dart';
 
 //? card to represent a single user in home screen
 class ChatUserCard extends StatefulWidget {
   final ChatUser user;
-  const ChatUserCard({super.key, required this.user});
+  ChatUserCard({super.key, required this.user});
 
   @override
   State<ChatUserCard> createState() => _ChatUserCardState();
 }
 
 class _ChatUserCardState extends State<ChatUserCard> {
-  var user = ChatUser();
+  // var user = ChatUser();
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        //? Navigate to chat Screen
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (_) => ChatScreen(
+                      user: widget.user,
+                    )));
+      },
       child: Card(
         borderOnForeground: true,
         color: const Color.fromARGB(255, 236, 224, 224),

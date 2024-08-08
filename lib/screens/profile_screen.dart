@@ -5,10 +5,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:glitz/glitz/api/apis.dart';
-import 'package:glitz/glitz/auth/firebase_auth.dart';
-import 'package:glitz/glitz/helper/dialogs.dart';
-import 'package:glitz/glitz/models/chat_user.dart';
+import 'package:glitz/api/apis.dart';
+import 'package:glitz/auth/firebase_auth.dart';
+import 'package:glitz/helper/dialogs.dart';
+import 'package:glitz/models/chat_user.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ProfileScreen extends StatefulWidget {

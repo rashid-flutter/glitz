@@ -4,7 +4,8 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:glitz/glitz/models/chat_user.dart';
+import 'package:glitz/chat/model/message.dart';
+import 'package:glitz/models/chat_user.dart';
 
 class APIs {
   //?for Authenticatio
@@ -90,5 +91,45 @@ class APIs {
     await firestore.collection("Rashi").doc(user.uid).update({
       'image': me.image,
     });
+  }
+
+  //* useful for getting conversatin id
+  static String getConversationID(String id) => user.uid.hashCode <= id.hashCode
+      ? '${user.uid}_$id'
+      : '${id}_${user.uid}';
+
+  //* get all messages in firestore database(db)
+  //? messages of a specific conversation from firestore database
+  static Stream<QuerySnapshot<Map<String, dynamic>>> getAllMessages(
+      ChatUser user) {
+    return firestore
+        .collection("chats/${getConversationID(user.id)}/messages/")
+        .snapshots();
+  }
+  //? chats (collection) -->conversations_id (doc)--> messages (collection)--> message (doc)
+
+  //* for sending message
+  static Future<void> sendMessage(ChatUser chatUser, String msg) async {
+    //?message sending time
+    final time = DateTime.now().millisecondsSinceEpoch.toString();
+    //?message to sent(also used as id)
+    final Message message = Message(
+        formId: user.uid,
+        msg: msg,
+        read: '',
+        told: chatUser.id,
+        type: Type.text,
+        sent: time);
+    final ref = firestore
+        .collection('chats/${getConversationID(chatUser.id)}/messages/');
+    await ref.doc(time).set(message.toJson());
+  }
+
+  //*update read status of message
+  static Future<void> updateMessageReadStatus(Message message) async {
+    firestore
+        .collection('chats/${getConversationID(message.formId)}/messages/')
+        .doc(message.sent)
+        .update({'read': DateTime.now().millisecondsSinceEpoch.toString()});
   }
 }

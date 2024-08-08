@@ -3,9 +3,9 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:glitz/glitz/api/apis.dart';
-import 'package:glitz/glitz/helper/dialogs.dart';
-import 'package:glitz/glitz/screens/login%20Screens/login_screen.dart';
+import 'package:glitz/api/apis.dart';
+import 'package:glitz/helper/dialogs.dart';
+import 'package:glitz/screens/login%20Screens/login_screen.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class FirebaseAuths {

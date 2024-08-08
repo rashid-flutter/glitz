@@ -3,12 +3,14 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:glitz/glitz/api/apis.dart';
-import 'package:glitz/glitz/auth/firebase_auth.dart';
-import 'package:glitz/glitz/models/chat_user.dart';
-import 'package:glitz/glitz/screens/profile_screen.dart';
-import 'package:glitz/glitz/screens/splash_screen.dart';
-import 'package:glitz/glitz/widgets/chat_user_card.dart';
+import 'package:glitz/api/apis.dart';
+import 'package:glitz/auth/firebase_auth.dart';
+import 'package:glitz/glitz_ai/screen/ai_screen.dart';
+import 'package:glitz/models/chat_user.dart';
+import 'package:glitz/screens/profile_screen.dart';
+import 'package:glitz/screens/splash_screen.dart';
+import 'package:glitz/widgets/chat_user_card.dart';
+import 'package:lottie/lottie.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -106,16 +108,14 @@ class _HomeScreenState extends State<HomeScreen> {
           floatingActionButton: Padding(
             padding: const EdgeInsets.only(bottom: 10),
             child: FloatingActionButton(
-              onPressed: () {
-                // FirebaseAuths.signOut();
-                // Navigator.pushAndRemoveUntil(
-                //     context,
-                //     MaterialPageRoute(builder: (_) => const SplashScreen()),
-                //     (r) => false);
-              },
-              child: const Icon(Icons.add_comment_rounded),
-            ),
+                backgroundColor: Colors.white,
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (_) => const AiScreen()));
+                },
+                child: Lottie.asset('assets/lottie/ai.json', width: 40)),
           ),
+
           body: StreamBuilder(
               stream: APIs.getAllUsers(),
               builder: (context, snapshot) {

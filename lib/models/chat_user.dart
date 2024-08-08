@@ -14,7 +14,7 @@ class ChatUser {
       this.name,
       this.about,
       this.createdAt,
-      this.id,
+      required this.id,
       this.lastActive,
       this.isOnline,
       this.pushToken,
@@ -23,7 +23,7 @@ class ChatUser {
   late String? name;
   late String? about;
   late String? createdAt;
-  late String? id;
+  late String id;
   late String? lastActive;
   late bool? isOnline;
   late String? pushToken;
