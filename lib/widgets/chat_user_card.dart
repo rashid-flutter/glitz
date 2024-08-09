@@ -6,7 +6,6 @@ import 'package:glitz/chat/model/message.dart';
 import 'package:glitz/helper/my_date_util.dart';
 import 'package:glitz/models/chat_user.dart';
 import 'package:glitz/chat/screen/chat_screen.dart';
-import 'package:glitz/profile/screen/profile_screen.dart';
 
 //? card to represent a single user in home screen
 class ChatUserCard extends StatefulWidget {
@@ -67,7 +66,9 @@ class _ChatUserCardState extends State<ChatUserCard> {
                 title: Text(widget.user.name.toString()),
                 //* last massage
                 subtitle: Text(message != null
-                    ? message!.msg
+                    ? message!.type == Type.image
+                        ? 'image'
+                        : message!.msg
                     : widget.user.about.toString()),
 
                 //* last massage time

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:glitz/api/apis.dart';
 import 'package:glitz/chat/model/message.dart';
@@ -30,7 +31,9 @@ class _MessageCardState extends State<MessageCard> {
       children: [
         Flexible(
           child: Container(
-            padding: EdgeInsets.all(MediaQuery.of(context).size.width * .04),
+            padding: EdgeInsets.all(widget.message.type == Type.image
+                ? MediaQuery.of(context).size.width * .03
+                : MediaQuery.of(context).size.width * .04),
             margin: EdgeInsets.symmetric(
                 horizontal: MediaQuery.of(context).size.width * .04,
                 vertical: MediaQuery.of(context).size.height * .01),
@@ -41,10 +44,27 @@ class _MessageCardState extends State<MessageCard> {
                     topLeft: Radius.circular(30),
                     topRight: Radius.circular(30),
                     bottomRight: Radius.circular(30))),
-            child: Text(
-              widget.message.msg,
-              style: const TextStyle(fontSize: 15, color: Colors.black87),
-            ),
+            child: widget.message.type == Type.text
+                ? Text(
+                    widget.message.msg,
+                    style: const TextStyle(fontSize: 15, color: Colors.black87),
+                  )
+                : ClipRRect(
+                    borderRadius: BorderRadius.circular(15),
+                    child: CachedNetworkImage(
+                        // fit: BoxFit.cover,
+                        placeholder: (context, url) => const Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                              ),
+                            ),
+                        imageUrl: widget.message.msg.toString(),
+                        errorWidget: (context, url, error) => const Icon(
+                              Icons.image,
+                              size: 70,
+                            )),
+                  ),
           ),
         ),
         Padding(
@@ -86,7 +106,9 @@ class _MessageCardState extends State<MessageCard> {
         //? message content
         Flexible(
           child: Container(
-            padding: EdgeInsets.all(MediaQuery.of(context).size.width * .04),
+            padding: EdgeInsets.all(widget.message.type == Type.image
+                ? MediaQuery.of(context).size.width * .03
+                : MediaQuery.of(context).size.width * .04),
             margin: EdgeInsets.symmetric(
                 horizontal: MediaQuery.of(context).size.width * .04,
                 vertical: MediaQuery.of(context).size.height * .01),
@@ -97,10 +119,27 @@ class _MessageCardState extends State<MessageCard> {
                     topLeft: Radius.circular(30),
                     topRight: Radius.circular(30),
                     bottomLeft: Radius.circular(30))),
-            child: Text(
-              widget.message.msg,
-              style: const TextStyle(fontSize: 15, color: Colors.black87),
-            ),
+            child: widget.message.type == Type.text
+                ? Text(
+                    widget.message.msg,
+                    style: const TextStyle(fontSize: 15, color: Colors.black87),
+                  )
+                : ClipRRect(
+                    borderRadius: BorderRadius.circular(15),
+                    child: CachedNetworkImage(
+                        // fit: BoxFit.cover,
+                        placeholder: (context, url) => const Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                              ),
+                            ),
+                        imageUrl: widget.message.msg.toString(),
+                        errorWidget: (context, url, error) => const Icon(
+                              Icons.image,
+                              size: 70,
+                            )),
+                  ),
           ),
         ),
       ],

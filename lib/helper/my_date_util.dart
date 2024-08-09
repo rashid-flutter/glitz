@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class MyDateUtil {
   static String getFormattedTime(BuildContext con, String time) {
@@ -18,6 +19,27 @@ class MyDateUtil {
       return TimeOfDay.fromDateTime(sent).format(con);
     }
     return '${sent.day}${getMonth(sent)}';
+  }
+
+  //? get formatted last active time of user in chat screen
+  static String getLastActiveTime(
+      {required BuildContext context, required String lastActive}) {
+    final int i = int.tryParse(lastActive) ?? -1;
+    //*if time is not available then return  below satement
+    if (i == -1) return 'Last seen not available';
+    DateTime time = DateTime.fromMillisecondsSinceEpoch(i);
+    DateTime now = DateTime.now();
+    String formattedTime = TimeOfDay.fromDateTime(time).format(context);
+    if (time.day == now.day &&
+        time.month == now.month &&
+        time.year == now.year) {
+      return 'Last Seen today at :$formattedTime';
+    }
+    if ((now.difference(time).inHours / 24).round() == 1) {
+      return 'Last seen yesterday at: $formattedTime';
+    }
+    String month = getMonth(time);
+    return 'Last seen on: ${time.day} $month on $formattedTime';
   }
 
   //?get month name from month no. or index

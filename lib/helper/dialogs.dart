@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:glitz/api/apis.dart';
-import 'package:glitz/models/chat_user.dart';
 
 class Dialogs {
   static void showSnackBar(BuildContext context, String msg) {

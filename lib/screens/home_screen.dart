@@ -3,12 +3,11 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:glitz/api/apis.dart';
-import 'package:glitz/auth/firebase_auth.dart';
 import 'package:glitz/glitz_ai/screen/ai_screen.dart';
 import 'package:glitz/models/chat_user.dart';
 import 'package:glitz/profile/screen/profile_screen.dart';
-import 'package:glitz/screens/splash_screen.dart';
 import 'package:glitz/widgets/chat_user_card.dart';
 import 'package:lottie/lottie.dart';
 
@@ -28,6 +27,20 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     APIs.getSelfInfo();
+    //* for setting user status to active
+    APIs.updateActiveStatus(true);
+    //*for updating user active status according to lifecycle events
+    //*resume --active or online
+    //*pause --inactive or offline
+    SystemChannels.lifecycle.setMessageHandler((message) {
+      if (message.toString().contains('resume')) {
+        APIs.updateActiveStatus(true);
+      }
+      if (message.toString().contains('pause')) {
+        APIs.updateActiveStatus(false);
+      }
+      return Future.value(message);
+    });
   }
 
   @override
@@ -63,10 +76,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       //? search logic
                       _searchList.clear();
                       for (var i in list) {
-                        if (i.name!.toLowerCase().contains(val.toLowerCase()) ||
-                            i.email!
-                                .toLowerCase()
-                                .contains(val.toLowerCase())) {
+                        if (i.name.toLowerCase().contains(val.toLowerCase()) ||
+                            i.email.toLowerCase().contains(val.toLowerCase())) {
                           _searchList.add(i);
                         }
                         setState(() {
@@ -74,9 +85,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         });
                       }
                     },
-                    style: TextStyle(fontSize: 17, letterSpacing: 0.5),
+                    style: const TextStyle(fontSize: 17, letterSpacing: 0.5),
                     autofocus: true,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                         border: InputBorder.none, hintText: "Name, Email, ..."),
                   )
                 : const Text(
