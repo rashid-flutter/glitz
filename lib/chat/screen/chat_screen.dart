@@ -9,6 +9,7 @@ import 'package:glitz/helper/my_date_util.dart';
 import 'package:glitz/models/chat_user.dart';
 import 'package:glitz/chat/model/message.dart';
 import 'package:glitz/chat/widgets/message_card.dart';
+import 'package:glitz/profile/screen/view/view_profile_screen.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -136,7 +137,12 @@ class _ChatScreenState extends State<ChatScreen> {
 
   Widget appBar() {
     return InkWell(
-        onTap: () {},
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (_) => ViewProfileScreen(user: widget.user)));
+        },
         child: StreamBuilder(
           stream: APIs.getUserInfo(widget.user),
           builder: (context, snapshot) {

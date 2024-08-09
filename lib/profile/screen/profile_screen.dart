@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -192,7 +193,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
             backgroundColor: Colors.red,
             onPressed: () async {
               Dialogs.showProgressBar(context);
+              await APIs.updateActiveStatus(false);
               FirebaseAuths.signOut(context);
+
+              APIs.auth = FirebaseAuth.instance;
             },
             icon: const Icon(
               Icons.logout,

@@ -6,6 +6,7 @@ import 'package:glitz/chat/model/message.dart';
 import 'package:glitz/helper/my_date_util.dart';
 import 'package:glitz/models/chat_user.dart';
 import 'package:glitz/chat/screen/chat_screen.dart';
+import 'package:glitz/profile/widget/profile_dialog.dart';
 
 //? card to represent a single user in home screen
 class ChatUserCard extends StatefulWidget {
@@ -49,16 +50,23 @@ class _ChatUserCardState extends State<ChatUserCard> {
               }
               return ListTile(
                 //? user profile image
-                leading: ClipRRect(
-                  borderRadius: BorderRadius.circular(
-                      MediaQuery.of(context).size.height * .3),
-                  child: CachedNetworkImage(
-                    width: MediaQuery.of(context).size.height * .055,
-                    height: MediaQuery.of(context).size.height * .055,
-                    imageUrl: widget.user.image.toString(),
-                    fit: BoxFit.cover,
-                    errorWidget: (context, url, error) => const CircleAvatar(
-                      backgroundImage: AssetImage('assets/icons/Logo.png'),
+                leading: InkWell(
+                  onTap: () {
+                    showDialog(
+                        context: context,
+                        builder: (_) => ProfileDialog(user: widget.user));
+                  },
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(
+                        MediaQuery.of(context).size.height * .3),
+                    child: CachedNetworkImage(
+                      width: MediaQuery.of(context).size.height * .055,
+                      height: MediaQuery.of(context).size.height * .055,
+                      imageUrl: widget.user.image.toString(),
+                      fit: BoxFit.cover,
+                      errorWidget: (context, url, error) => const CircleAvatar(
+                        backgroundImage: AssetImage('assets/icons/Logo.png'),
+                      ),
                     ),
                   ),
                 ),

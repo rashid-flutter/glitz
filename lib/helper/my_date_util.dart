@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class MyDateUtil {
   static String getFormattedTime(BuildContext con, String time) {
@@ -10,7 +8,9 @@ class MyDateUtil {
 
   //?get last message time(used in a chat user card)
   static String lastMessageTime(
-      {required BuildContext con, required String time}) {
+      {required BuildContext con,
+      required String time,
+      bool showYear = false}) {
     final DateTime sent = DateTime.fromMillisecondsSinceEpoch(int.parse(time));
     final DateTime now = DateTime.now();
     if (now.day == sent.day &&
@@ -18,7 +18,9 @@ class MyDateUtil {
         now.year == sent.year) {
       return TimeOfDay.fromDateTime(sent).format(con);
     }
-    return '${sent.day}${getMonth(sent)}';
+    return showYear
+        ? '${sent.day}${getMonth(sent)}${sent.year}'
+        : '${sent.day}${getMonth(sent)}';
   }
 
   //? get formatted last active time of user in chat screen
