@@ -34,6 +34,10 @@ dependencies:
   google_generative_ai: ^0.4.4
   flutter_gemini: ^2.0.4
 
+  #?for accessing firebase messageing (push notiefication)
+  firebase_messaging: ^15.0.4
+  firebase_analytics: ^11.2.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

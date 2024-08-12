@@ -37,6 +37,13 @@
             {
               "client_id": "1040172260122-mrm6s7asdtorsb5645g9spmpqqppodq7.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "1040172260122-k5eghlj34oe3j9oe93d7lus875j8vn01.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.glitz"
+              }
             }
           ]
         }

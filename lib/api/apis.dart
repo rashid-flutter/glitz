@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:glitz/chat/model/message.dart';
 import 'package:glitz/models/chat_user.dart';
@@ -28,10 +29,53 @@ class APIs {
 
   static late ChatUser me;
 
+  //?for accessing firebase messageing (push notiefication)
+  static FirebaseMessaging fMessaging = FirebaseMessaging.instance;
+
+  //?for getting firebase messaging token
+  static Future<void> getFirebaseMessagingToken() async {
+    await fMessaging.requestPermission();
+    fMessaging.getToken().then((t) {
+      if (t != null) {
+        me.pushToken = t;
+        log('Push Token: $t');
+      }
+    });
+  }
+
+  //for getting push notification
+  // static Future<void> sentPushNotification(
+  //     ChatUser chatUser, String msg) async {
+  //   try {
+  //     final body = {
+  //       {
+  //         "to": chatUser.pushToken,
+  //         "notification": {"title": chatUser.name, "body": msg}
+  //       }
+  //     };
+  //     var res = await post(
+  //       Uri.parse('http://localhost:3000/send-notification'),
+  //       body: jsonEncode(body),
+  //       headers: {
+  //         HttpHeaders.contentTypeHeader: 'application/json',
+  //         HttpHeaders.authorizationHeader:
+  //             'BHJWg-9oR7XivhnfG7QpkHJBJj0hSOXRG8eXuKpFjoLTLHyIxvMqaOGK-v_rRiWFvQhaSTbK6aXUnPrjSFrqBCQ'
+  //       },
+  //     );
+  //     log('Response status: ${res.statusCode}');
+  //     log('Response body: ${res.body}');
+  //   } catch (e) {
+  //     log('Error:$e');
+  //   }
+  // }
+
   static Future<void> getSelfInfo() async {
     await firestore.collection('Rashi').doc(user.uid).get().then((user) async {
       if (user.exists) {
         me = ChatUser.fromJson(user.data()!);
+        await getFirebaseMessagingToken();
+//* for setting user status to active
+        APIs.updateActiveStatus(true);
         log('My Data: ${user.data()}');
       } else {
         await createUser().then((value) => getSelfInfo());
@@ -80,7 +124,8 @@ class APIs {
   static Future<void> updateActiveStatus(bool isOnline) async {
     firestore.collection("Rashi").doc(user.uid).update({
       'is_online': isOnline,
-      'last_active': DateTime.now().millisecondsSinceEpoch.toString()
+      'last_active': DateTime.now().millisecondsSinceEpoch.toString(),
+      'push_token': me.pushToken,
     });
   }
 

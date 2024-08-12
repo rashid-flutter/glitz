@@ -67,5 +67,4 @@ class DefaultFirebaseOptions {
     iosClientId: '1040172260122-k5eghlj34oe3j9oe93d7lus875j8vn01.apps.googleusercontent.com',
     iosBundleId: 'com.example.glitz',
   );
-
 }
