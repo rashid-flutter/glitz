@@ -27,6 +27,7 @@ dependencies:
 
   #? for show in network image
   cached_network_image: ^3.4.0
+  #? shows in emojies
   emoji_picker_flutter: ^2.2.0
   googleapis_auth: ^1.6.0
   http: ^1.2.2
@@ -37,6 +38,7 @@ dependencies:
   #?for accessing firebase messageing (push notiefication)
   firebase_messaging: ^15.0.4
   firebase_analytics: ^11.2.1
+  flutter_notification_channel: ^3.1.0
 
 dev_dependencies:
   flutter_test:

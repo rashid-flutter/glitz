@@ -15,9 +15,13 @@ class MessageCard extends StatefulWidget {
 class _MessageCardState extends State<MessageCard> {
   @override
   Widget build(BuildContext context) {
-    return APIs.user.uid == widget.message.formId
-        ? greenMessage()
-        : blueMessage();
+    bool isMe = APIs.user.uid == widget.message.formId;
+    return InkWell(
+      onLongPress: () {
+        showBottomSheet();
+      },
+      child: isMe ? greenMessage() : blueMessage(),
+    );
   }
 
   Widget blueMessage() {
@@ -144,5 +148,30 @@ class _MessageCardState extends State<MessageCard> {
         ),
       ],
     );
+  }
+
+//?bottom sheet for modifying messsage ditails
+  void showBottomSheet() {
+    showModalBottomSheet(
+        context: context,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+        builder: (_) {
+          return ListView(
+            shrinkWrap: true,
+            children: [
+              const Text(
+                'Pick Profile Picture',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              SizedBox(height: MediaQuery.of(context).size.height * .02),
+            ],
+          );
+        });
   }
 }

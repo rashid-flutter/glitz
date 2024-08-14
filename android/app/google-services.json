@@ -7,6 +7,78 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:1040172260122:android:b64edd2cf520112f4f2aa3",
+        "android_client_info": {
+          "package_name": "com.examle.glitz"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1040172260122-mrm6s7asdtorsb5645g9spmpqqppodq7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBRJ5BK0y43JWoY2cnmDoADL4LLnXYNSs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1040172260122-mrm6s7asdtorsb5645g9spmpqqppodq7.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1040172260122-k5eghlj34oe3j9oe93d7lus875j8vn01.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.glitz"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1040172260122:android:a67295b12e81f5ea4f2aa3",
+        "android_client_info": {
+          "package_name": "com.example.com"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1040172260122-mrm6s7asdtorsb5645g9spmpqqppodq7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBRJ5BK0y43JWoY2cnmDoADL4LLnXYNSs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1040172260122-mrm6s7asdtorsb5645g9spmpqqppodq7.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1040172260122-k5eghlj34oe3j9oe93d7lus875j8vn01.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.glitz"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:1040172260122:android:795047c8bc42be494f2aa3",
         "android_client_info": {
           "package_name": "com.example.glitz"
