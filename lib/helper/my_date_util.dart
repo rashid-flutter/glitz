@@ -1,9 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class MyDateUtil {
+  //? for getting formmated time for sent and read
   static String getFormattedTime(BuildContext con, String time) {
     final date = DateTime.fromMillisecondsSinceEpoch(int.parse(time));
     return TimeOfDay.fromDateTime(date).format(con);
+  }
+
+  //? for getting formmated time for sent and read
+  static String getMessageTime(
+      {required BuildContext context, required String time}) {
+    final DateTime sent = DateTime.fromMillisecondsSinceEpoch(int.parse(time));
+    final DateTime now = DateTime.now();
+    final formatttedTime = TimeOfDay.fromDateTime(sent).format(context);
+    if (now.day == sent.day &&
+        now.month == sent.month &&
+        now.year == sent.year) {
+      return formatttedTime;
+    }
+    return now.year == sent.year
+        ? '$formatttedTime - ${sent.day} - ${getMonth(sent)}'
+        : '$formatttedTime - ${sent.day} - ${getMonth(sent)} ${sent.year}';
   }
 
   //?get last message time(used in a chat user card)
