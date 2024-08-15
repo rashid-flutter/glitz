@@ -30,7 +30,6 @@ dependencies:
   #? shows in emojies
   emoji_picker_flutter: ^2.2.0
   googleapis_auth: ^1.6.0
-  http: ^1.2.2
   lottie: ^3.1.2
   google_generative_ai: ^0.4.4
   flutter_gemini: ^2.0.4
@@ -39,6 +38,9 @@ dependencies:
   firebase_messaging: ^15.0.4
   firebase_analytics: ^11.2.1
   flutter_notification_channel: ^3.1.0
+  gallery_saver_updated: ^3.0.0
+  dio: ^5.6.0
+ 
 
 dev_dependencies:
   flutter_test:

@@ -11,7 +11,7 @@ import 'package:glitz/profile/widget/profile_dialog.dart';
 //? card to represent a single user in home screen
 class ChatUserCard extends StatefulWidget {
   final ChatUser user;
-  ChatUserCard({super.key, required this.user});
+  ChatUserCard({key, required this.user});
 
   @override
   State<ChatUserCard> createState() => _ChatUserCardState();

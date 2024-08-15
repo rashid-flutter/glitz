@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:gallery_saver_updated/gallery_saver.dart';
 import 'package:glitz/api/apis.dart';
 import 'package:glitz/chat/model/message.dart';
 import 'package:glitz/helper/dialogs.dart';
@@ -56,7 +59,21 @@ class ChatWigets {
                         size: 26,
                       ),
                       nmae: 'Save Image',
-                      onTap: () {},
+                      onTap: () async {
+                        try {
+                          GallerySaver.saveImage(message.msg,
+                                  albumName: 'Glitz Chats')
+                              .then((success) {
+                            Navigator.pop(context);
+                            if (success != null && success) {
+                              Dialogs.showSnackBar(
+                                  context, 'Image Successfully Saved!');
+                            }
+                          });
+                        } catch (e) {
+                          log('error: $e');
+                        }
+                      },
                     ),
               //?;/separator
               Divider(
