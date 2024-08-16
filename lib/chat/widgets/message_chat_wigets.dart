@@ -90,7 +90,11 @@ class ChatWigets {
                     size: 26,
                   ),
                   nmae: 'Edit Message',
-                  onTap: () {},
+                  onTap: () {
+                    //* for hiding bottom sheet
+                    Navigator.pop(context);
+                    _showMessageUpdateDialog(message, context);
+                  },
                 ),
               if (isMe)
                 _OptionItem(
@@ -267,6 +271,65 @@ class ChatWigets {
         ),
       ],
     );
+  }
+
+  //? Dialog for update message content
+  static void _showMessageUpdateDialog(Message message, BuildContext context) {
+    String updatedMsg = message.msg;
+    FocusNode _focusNode = FocusNode();
+    showDialog(
+        context: context,
+        builder: (BuildContext con) => AlertDialog(
+              contentPadding: const EdgeInsets.only(
+                  left: 24, right: 24, top: 20, bottom: 10),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20)),
+              //* Title
+              title: const Row(
+                children: [
+                  Icon(
+                    Icons.message,
+                    color: Colors.blue,
+                    size: 28,
+                  ),
+                  Text(' Update Message')
+                ],
+              ),
+              //*content
+              content: TextFormField(
+                focusNode: _focusNode,
+                onChanged: (value) => updatedMsg = value,
+                maxLines: null,
+                initialValue: updatedMsg,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15)),
+                ),
+              ),
+              actions: [
+                ElevatedButton(
+                  onPressed: () {
+                    //? Hide alert dialog
+                    Navigator.pop(con);
+                  },
+                  child: const Text(
+                    'Cancel',
+                    style: TextStyle(color: Colors.blue, fontSize: 16),
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    //? Hide alert dialog
+                    Navigator.pop(con);
+                    APIs.updateMessage(message, updatedMsg);
+                  },
+                  child: const Text(
+                    'Update',
+                    style: TextStyle(color: Colors.blue, fontSize: 16),
+                  ),
+                )
+              ],
+            ));
   }
 }
 

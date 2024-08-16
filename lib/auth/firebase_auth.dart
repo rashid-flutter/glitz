@@ -35,6 +35,7 @@ class FirebaseAuths {
   //Sign Out fn
   static signOut(BuildContext con) async {
     await APIs.auth.signOut().then((value) async {
+      //? sign out in google
       await GoogleSignIn().signOut().then((value) {
         //*move to home screen
         Navigator.of(con).pop();
