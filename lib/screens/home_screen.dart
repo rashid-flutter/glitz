@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:glitz/api/apis.dart';
 import 'package:glitz/glitz_ai/screen/ai_screen.dart';
+import 'package:glitz/helper/dialogs.dart';
 import 'package:glitz/models/chat_user.dart';
 import 'package:glitz/profile/screen/profile_screen.dart';
 import 'package:glitz/widgets/chat_user_card.dart';
@@ -109,6 +110,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   icon: Icon(_isSearching ? Icons.clear : Icons.search)),
 
               //more features button
+
               IconButton(
                   onPressed: () {
                     Navigator.push(
@@ -119,15 +121,40 @@ class _HomeScreenState extends State<HomeScreen> {
                   icon: const Icon(Icons.more_vert)),
             ],
           ),
-          floatingActionButton: Padding(
-            padding: const EdgeInsets.only(bottom: 10),
-            child: FloatingActionButton(
-                backgroundColor: Colors.white,
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => const AiScreen()));
-                },
-                child: Lottie.asset('assets/lottie/ai.json', width: 40)),
+          // floatingActionButton: Padding(
+          //   padding: const EdgeInsets.only(bottom: 10),
+          //   child: FloatingActionButton(
+          //       backgroundColor: Colors.white,
+          //       onPressed: () {
+          //         Navigator.push(context,
+          //             MaterialPageRoute(builder: (_) => const AiScreen()));
+          //       },
+          //       child: Lottie.asset('assets/lottie/ai.json', width: 40)),
+          // ),
+          floatingActionButton: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ElevatedButton(
+                  // backgroundColor: Colors.white,
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (_) => const AiScreen()));
+                  },
+                  child: Lottie.asset(
+                    'assets/lottie/ai.json',
+                    width: 20,
+                  )),
+              const SizedBox(height: 10),
+              ElevatedButton(
+                  // backgroundColor: Colors.white,
+                  onPressed: () {
+                    _showAddUserDialog();
+                  },
+                  child: const Icon(
+                    Icons.add,
+                    color: Colors.blue,
+                  )),
+            ],
           ),
 
           body: StreamBuilder(
@@ -171,5 +198,76 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
+  }
+
+  //? for adding new chat user
+  void _showAddUserDialog() {
+    String email = '';
+
+    FocusNode _focusNode = FocusNode();
+    showDialog(
+        context: context,
+        builder: (BuildContext con) => AlertDialog(
+              contentPadding: const EdgeInsets.only(
+                  left: 24, right: 24, top: 20, bottom: 10),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20)),
+              //* Title
+              title: const Row(
+                children: [
+                  Icon(
+                    Icons.person_add,
+                    color: Colors.blue,
+                    size: 28,
+                  ),
+                  Text(' Add User')
+                ],
+              ),
+              //*content
+              content: TextFormField(
+                focusNode: _focusNode,
+                onChanged: (value) => email = value,
+                maxLines: null,
+                decoration: InputDecoration(
+                  hintText: 'Email Id',
+                  prefixIcon: const Icon(
+                    Icons.email,
+                    color: Colors.blue,
+                  ),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15)),
+                ),
+              ),
+              actions: [
+                ElevatedButton(
+                  onPressed: () {
+                    //? Hide alert dialog
+                    Navigator.pop(con);
+                  },
+                  child: const Text(
+                    'Cancel',
+                    style: TextStyle(color: Colors.blue, fontSize: 16),
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    //? Hide alert dialog
+                    Navigator.pop(con);
+                    if (email.isNotEmpty) {
+                      await APIs.addChatUser(email).then((value) {
+                        if (!value) {
+                          Dialogs.showSnackBar(
+                              context, 'User does not Exists!');
+                        }
+                      });
+                    }
+                  },
+                  child: const Text(
+                    'Add',
+                    style: TextStyle(color: Colors.blue, fontSize: 16),
+                  ),
+                )
+              ],
+            ));
   }
 }

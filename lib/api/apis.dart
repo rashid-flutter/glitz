@@ -27,6 +27,28 @@ class APIs {
         .exists;
   }
 
+  //? for adding an chat user for our conversation
+  static Future<bool> addChatUser(String email) async {
+    final data = await firestore
+        .collection('Rashi')
+        .where('email', isEqualTo: email)
+        .get();
+    log('data: ${data.docs}');
+    if (data.docs.isNotEmpty && data.docs.first.id != user.uid) {
+      //* user exists
+      firestore
+          .collection('Rashi')
+          .doc(user.uid)
+          .collection('my_users')
+          .doc(data.docs.first.id)
+          .set({});
+      return true;
+    } else {
+      //*user does not exists
+      return false;
+    }
+  }
+
   static late ChatUser me;
 
   //?for accessing firebase messageing (push notiefication)
