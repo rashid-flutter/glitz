@@ -28,6 +28,29 @@ class ChatUser {
   late bool isOnline;
   late String pushToken;
   late String email;
+  ChatUser copyWith({
+    String? id,
+    String? name,
+    String? email,
+    String? about,
+    String? image,
+    String? createdAt,
+    bool? isOnline,
+    String? lastActive,
+    String? pushToken,
+  }) {
+    return ChatUser(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      email: email ?? this.email,
+      about: about ?? this.about,
+      image: image ?? this.image,
+      createdAt: createdAt ?? this.createdAt,
+      isOnline: isOnline ?? this.isOnline,
+      lastActive: lastActive ?? this.lastActive,
+      pushToken: pushToken ?? this.pushToken,
+    );
+  }
 
   ChatUser.fromJson(Map<String, dynamic> json) {
     image = json['image'] ?? '';

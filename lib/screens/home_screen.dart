@@ -65,102 +65,107 @@ class _HomeScreenState extends State<HomeScreen> {
           }
         },
         child: Scaffold(
-          //app bar
-          appBar: AppBar(
-            backgroundColor: Colors.transparent,
-            leading: const CircleAvatar(
+            //app bar
+            appBar: AppBar(
               backgroundColor: Colors.transparent,
-              backgroundImage: AssetImage('assets/icons/LogoG.png'),
-            ),
-            //? when search text changes then updated search list
-            title: _isSearching
-                ? TextField(
-                    onChanged: (val) {
-                      //? search logic
-                      _searchList.clear();
-                      for (var i in list) {
-                        if (i.name.toLowerCase().contains(val.toLowerCase()) ||
-                            i.email.toLowerCase().contains(val.toLowerCase())) {
-                          _searchList.add(i);
+              leading: const CircleAvatar(
+                backgroundColor: Colors.transparent,
+                backgroundImage: AssetImage('assets/icons/LogoG.png'),
+              ),
+              //? when search text changes then updated search list
+              title: _isSearching
+                  ? TextField(
+                      onChanged: (val) {
+                        //? search logic
+                        _searchList.clear();
+                        for (var i in list) {
+                          if (i.name
+                                  .toLowerCase()
+                                  .contains(val.toLowerCase()) ||
+                              i.email
+                                  .toLowerCase()
+                                  .contains(val.toLowerCase())) {
+                            _searchList.add(i);
+                          }
+                          setState(() {
+                            _searchList;
+                          });
                         }
-                        setState(() {
-                          _searchList;
-                        });
-                      }
+                      },
+                      style: const TextStyle(fontSize: 17, letterSpacing: 0.5),
+                      autofocus: true,
+                      decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          hintText: "Name, Email, ..."),
+                    )
+                  : const Text(
+                      "G L I T Z",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w900, color: Colors.black),
+                    ),
+              centerTitle: true,
+              actions: [
+                //search user button
+                IconButton(
+                    onPressed: () {
+                      setState(() {
+                        _isSearching = !_isSearching;
+                      });
                     },
-                    style: const TextStyle(fontSize: 17, letterSpacing: 0.5),
-                    autofocus: true,
-                    decoration: const InputDecoration(
-                        border: InputBorder.none, hintText: "Name, Email, ..."),
-                  )
-                : const Text(
-                    "G L I T Z",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w900, color: Colors.black),
-                  ),
-            centerTitle: true,
-            actions: [
-              //search user button
-              IconButton(
-                  onPressed: () {
-                    setState(() {
-                      _isSearching = !_isSearching;
-                    });
-                  },
-                  icon: Icon(_isSearching ? Icons.clear : Icons.search)),
+                    icon: Icon(_isSearching ? Icons.clear : Icons.search)),
 
-              //more features button
+                //more features button
 
-              IconButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (_) => ProfileScreen(user: APIs.me)));
-                  },
-                  icon: const Icon(Icons.more_vert)),
-            ],
-          ),
-          // floatingActionButton: Padding(
-          //   padding: const EdgeInsets.only(bottom: 10),
-          //   child: FloatingActionButton(
-          //       backgroundColor: Colors.white,
-          //       onPressed: () {
-          //         Navigator.push(context,
-          //             MaterialPageRoute(builder: (_) => const AiScreen()));
-          //       },
-          //       child: Lottie.asset('assets/lottie/ai.json', width: 40)),
-          // ),
-          floatingActionButton: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ElevatedButton(
-                  // backgroundColor: Colors.white,
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (_) => const AiScreen()));
-                  },
-                  child: Lottie.asset(
-                    'assets/lottie/ai.json',
-                    width: 20,
-                  )),
-              const SizedBox(height: 10),
-              ElevatedButton(
-                  // backgroundColor: Colors.white,
-                  onPressed: () {
-                    _showAddUserDialog();
-                  },
-                  child: const Icon(
-                    Icons.add,
-                    color: Colors.blue,
-                  )),
-            ],
-          ),
-
-          body: StreamBuilder(
-              stream: APIs.getAllUsers(),
-              builder: (context, snapshot) {
-                switch (snapshot.connectionState) {
+                IconButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => ProfileScreen(user: APIs.me)));
+                    },
+                    icon: const Icon(Icons.more_vert)),
+              ],
+            ),
+            // floatingActionButton: Padding(
+            //   padding: const EdgeInsets.only(bottom: 10),
+            //   child: FloatingActionButton(
+            //       backgroundColor: Colors.white,
+            //       onPressed: () {
+            //         Navigator.push(context,
+            //             MaterialPageRoute(builder: (_) => const AiScreen()));
+            //       },
+            //       child: Lottie.asset('assets/lottie/ai.json', width: 40)),
+            // ),
+            floatingActionButton: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ElevatedButton(
+                    // backgroundColor: Colors.white,
+                    onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (_) => const AiScreen()));
+                    },
+                    child: Lottie.asset(
+                      'assets/lottie/ai.json',
+                      width: 20,
+                    )),
+                const SizedBox(height: 10),
+                ElevatedButton(
+                    // backgroundColor: Colors.white,
+                    onPressed: () {
+                      _showAddUserDialog();
+                    },
+                    child: const Icon(
+                      Icons.add,
+                      color: Colors.blue,
+                    )),
+              ],
+            ),
+            body: StreamBuilder(
+              stream: APIs.getMyUserId(),
+              //?get id for only known users
+              builder: (context, snapshort) {
+                switch (snapshort.connectionState) {
                   //data is loaded
                   case ConnectionState.waiting:
                   case ConnectionState.none:
@@ -171,31 +176,54 @@ class _HomeScreenState extends State<HomeScreen> {
                   //if all data is loaded then show it
                   case ConnectionState.active:
                   case ConnectionState.done:
-                    // if (snapshot.hasData) {
-                    final data = snapshot.data?.docs;
-                    list = data
-                            ?.map((e) => ChatUser.fromJson(e.data()))
-                            .toList() ??
-                        [];
-                    if (list.isNotEmpty) {
-                      return ListView.builder(
-                        padding: EdgeInsets.only(
-                            top: MediaQuery.of(context).size.height * .01),
-                        itemBuilder: (context, index) {
-                          return ChatUserCard(
-                            user:
-                                _isSearching ? _searchList[index] : list[index],
-                          );
-                        },
-                        itemCount:
-                            _isSearching ? _searchList.length : list.length,
-                      );
-                    } else {
-                      return const Center(child: Text('No Connections found!'));
-                    }
+                    return StreamBuilder(
+                        stream: APIs.getAllUsers(
+                            snapshort.data?.docs.map((e) => e.id).toList() ??
+                                []),
+                        //? get only those user who's ids are provided
+                        builder: (context, snapshot) {
+                          switch (snapshot.connectionState) {
+                            //data is loaded
+                            case ConnectionState.waiting:
+                            case ConnectionState.none:
+                            // return const Center(
+                            //   child: CircularProgressIndicator(),
+                            // );
+
+                            //if all data is loaded then show it
+                            case ConnectionState.active:
+                            case ConnectionState.done:
+                              // if (snapshot.hasData) {
+                              final data = snapshot.data?.docs;
+                              list = data
+                                      ?.map((e) => ChatUser.fromJson(e.data()))
+                                      .toList() ??
+                                  [];
+                              if (list.isNotEmpty) {
+                                return ListView.builder(
+                                  padding: EdgeInsets.only(
+                                      top: MediaQuery.of(context).size.height *
+                                          .01),
+                                  itemBuilder: (context, index) {
+                                    return ChatUserCard(
+                                      user: _isSearching
+                                          ? _searchList[index]
+                                          : list[index],
+                                    );
+                                  },
+                                  itemCount: _isSearching
+                                      ? _searchList.length
+                                      : list.length,
+                                );
+                              } else {
+                                return const Center(
+                                    child: Text('No Connections found!'));
+                              }
+                          }
+                        });
                 }
-              }),
-        ),
+              },
+            )),
       ),
     );
   }
